@@ -1,6 +1,10 @@
 # figurl-tiled-image
 
-View a tiled image using deck.gl
+View a tiled image using deck.gl.
+
+This project uses [kachery-cloud]](https://github.com/scratchrealm/kachery-cloud) and [figurl](https://github.com/scratchrealm/figurl2).
+
+> **IMPORTANT**: This package is intended for collaborative sharing of data for scientific research. It should not be used for other purposes.
 
 ## Installation and setup
 
@@ -36,7 +40,7 @@ print(url)
 
 ## Example - Mandelbrot set
 
-See [examples/mandelbrot.py](examples/mandelbrot.py) and See [examples/mini_mandelbrot.py](examples/mini_mandelbrot.py)
+See [examples/mandelbrot.py](examples/mandelbrot.py) and [examples/mini_mandelbrot.py](examples/mini_mandelbrot.py)
 
 ```python
 import numpy as np
@@ -64,13 +68,11 @@ print(url)
 # https://figurl.org/f?v=gs://figurl/tiled-image-1&d=ipfs://bafkreihcn72fhpebdujz5dj7bkmsrn3cydrl73y6gnwawtk5by4jmnsv4e&label=Mandelbrot%20tiled%20image
 ```
 
-See [examples/example1.py](examples/example1.py)
-
-[View figURL](https://figurl.org/f?v=gs://figurl/tiled-image-1&d=ipfs://bafkreihcn72fhpebdujz5dj7bkmsrn3cydrl73y6gnwawtk5by4jmnsv4e&label=Mandelbrot%20tiled%20image)
+[View resulting figURL - Mandelbrot set](https://figurl.org/f?v=gs://figurl/tiled-image-1&d=ipfs://bafkreihcn72fhpebdujz5dj7bkmsrn3cydrl73y6gnwawtk5by4jmnsv4e&label=Mandelbrot%20tiled%20image)
 
 ## For developers
 
-The front-end code is found in the `gui` directory. It uses typescript/react and is deployed as a figurl visualization plugin.
+The front-end code is found in the [gui/](gui/) directory. It uses typescript/react and is deployed as a [figurl](https://github.com/scratchrealm/figurl2) visualization plugin.
 
 You can run a local development version of this via:
 
