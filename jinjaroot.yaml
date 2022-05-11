@@ -1,0 +1,8 @@
+projectName: figurl_tiled_image
+pythonProjectVersion: 0.1.0
+projectAuthor: Jeremy Magland
+projectAuthorEmail: jmagland@flatironinstitute.org
+projectDescription: View tiled image using deck.gl
+projectUrl: https://github.com/scratchrealm/figurl-tiled-image
+projectBugTrackerUrl: https://github.com/scratchrealm/figurl-tiled-image/issues
+pythonPackageDir: .

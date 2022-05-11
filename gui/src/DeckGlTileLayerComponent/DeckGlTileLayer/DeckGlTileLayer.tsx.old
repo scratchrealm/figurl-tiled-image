@@ -1,0 +1,50 @@
+import { TileLayer } from '@deck.gl/geo-layers';
+import { BitmapLayer } from '@deck.gl/layers';
+import DeckGL from '@deck.gl/react';
+import React, { FunctionComponent } from 'react';
+
+export interface DeckGlTileLayerProps {
+}
+
+// Viewport settings
+const INITIAL_VIEW_STATE = {
+    longitude: -122.41669,
+    latitude: 37.7853,
+    zoom: 1,
+    pitch: 0,
+    bearing: 0
+};
+
+const layer = new TileLayer({
+    // https://wiki.openstreetmap.org/wiki/Slippy_map_tilenames#Tile_servers
+    data: 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+    minZoom: 0,
+    maxZoom: 19,
+    tileSize: 256,
+
+    renderSubLayers: (props: any) => {
+      const {
+        bbox: {west, south, east, north}
+      } = props.tile;
+
+      return new BitmapLayer(props, {
+        data: null,
+        image: props.data,
+        bounds: [west, south, east, north]
+      });
+    }
+})
+
+const DeckGlTileLayer: FunctionComponent<DeckGlTileLayerProps> = () => {
+    return (
+        <DeckGL
+            tabIndex="1"
+            initialViewState={INITIAL_VIEW_STATE}
+            layers={[layer]}
+            controller={true}
+        />
+    )
+}
+
+export default DeckGlTileLayer
