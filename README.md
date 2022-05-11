@@ -85,4 +85,4 @@ yarn install
 yarn start
 ```
 
-Then replace `v=gs://figurl/tiled-image-1` by `http://localhost:3000` in the URL you are viewing.
+Then replace `v=gs://figurl/tiled-image-1` by `v=http://localhost:3000` in the URL you are viewing.
