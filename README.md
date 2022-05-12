@@ -18,7 +18,7 @@ cd figurl-tiled-image
 pip install -e .
 ```
 
-Configure your [kachery-cloud](https://github.com/scratchrealm/kachery-cloud) client
+Configure your [kachery-cloud](https://github.com/scratchrealm/kachery-cloud) client (only do this once on your computer)
 
 ```bash
 kachery-cloud-init
@@ -27,6 +27,8 @@ kachery-cloud-init
 
 ## Basic usage
 
+From Numpy array:
+
 ```python
 import numpy as np
 from figurl_tiled_image import TiledImage
@@ -34,6 +36,20 @@ from figurl_tiled_image import TiledImage
 array = ... # create a color image numpy array [N1 x N2 x 3] uint8
 
 X = TiledImage(array, tile_size=512)
+url = X.url(label='Numpy example')
+print(url)
+```
+
+From image file:
+
+```python
+import pyvips
+from figurl_tiled_image import TiledImage
+
+filename = '/path/to/some/image.png' # substitute the path to your image
+image = pyvips.new_from_file(filename)
+
+X = TiledImage(image, tile_size=512)
 url = X.url(label='Example')
 print(url)
 ```
@@ -70,6 +86,12 @@ print(url)
 
 [View resulting figURL - Mandelbrot set](https://figurl.org/f?v=gs://figurl/tiled-image-1&d=ipfs://bafkreihcn72fhpebdujz5dj7bkmsrn3cydrl73y6gnwawtk5by4jmnsv4e&label=Mandelbrot%20tiled%20image)
 
+## Example - High res. earth from NASA and NOAA
+
+See [examples/high_res_earth_from_url.py](examples/high_res_earth_from_url.py)
+
+[View resulting figURL - Earth](https://figurl.org/f?v=gs://figurl/tiled-image-1&d=ipfs://bafkreidde4hrwsoh44dzntxm4sl3n7vccksd74pzcmnu5fgqhwtpy3zpxq&label=Earth%20-%20tiled%20image%20example)
+
 ## For developers
 
 The front-end code is found in the [gui/](gui/) directory. It uses typescript/react and is deployed as a [figurl](https://github.com/scratchrealm/figurl2) visualization plugin.
@@ -85,4 +107,4 @@ yarn install
 yarn start
 ```
 
-Then replace `v=gs://figurl/tiled-image-1` by `v=http://localhost:3000` in the URL you are viewing.
+Then replace `v=gs://figurl/tiled-image-1` by `v=http://localhost:3000` in the URL you are viewing. Updates to the source code will live-update the view in the browser. If you improve the visualization, please contribute by creating a PR.
