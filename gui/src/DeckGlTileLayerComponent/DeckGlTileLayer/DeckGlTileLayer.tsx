@@ -42,7 +42,7 @@ const DeckGlTileLayer: FunctionComponent<DeckGlTileLayerProps> = ({tileSize, ima
             pickable: true,
             tileSize,
             autoHighlight,
-            highlightColor: [60, 60, 60, 100],
+            highlightColor: [255, 255, 255, 20],
             minZoom: -7,
             maxZoom: 0,
             coordinateSystem: COORDINATE_SYSTEM.CARTESIAN,
@@ -82,7 +82,7 @@ const DeckGlTileLayer: FunctionComponent<DeckGlTileLayerProps> = ({tileSize, ima
             }
             });
         return [tileLayer]
-    }, [imageFiles, tileSize, imageWidth, imageHeight])
+    }, [imageFiles, tileSize, imageWidth, imageHeight, numZoomLevels])
     return (
         <DeckGL
             views={views}

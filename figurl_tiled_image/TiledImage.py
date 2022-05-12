@@ -1,4 +1,6 @@
+from concurrent.futures import ThreadPoolExecutor
 import os
+from typing import List, Union
 import numpy as np
 import pyvips
 import kachery_cloud as kcl
@@ -6,12 +8,15 @@ import figurl as fig
 
 
 class TiledImage:
-    def __init__(self, data: np.array, *, tile_size: int) -> None:
-        assert data.dtype == np.uint8, 'Data must be of type uint8'
-        self._data = data
+    def __init__(self, data: Union[np.array, pyvips.Image], *, tile_size: int) -> None:
+        if isinstance(data, pyvips.Image):
+            self._image: pyvips.Image = data
+        else:
+            assert data.dtype == np.uint8, 'Data must be of type uint8'
+            self._image: pyvips.Image = pyvips.Image.new_from_array(data)
         self._tile_size = tile_size
     def url(self, *, label: str):
-        image: pyvips.Image = pyvips.Image.new_from_array(self._data)
+        image = self._image
         with kcl.TemporaryDirectory() as tmpdir:
             image.dzsave(f'{tmpdir}/output',
                 overlap=0, 
@@ -19,6 +24,8 @@ class TiledImage:
                 layout=pyvips.enums.ForeignDzLayout.DZ
             )
             output_dirname = f'{tmpdir}/output_files'
+
+            # Collect image files in a dict
             image_files = {}
             z = 1
             while True:
@@ -35,22 +42,51 @@ class TiledImage:
                         fname = f'{dirname}/{j}_{k}.jpeg'
                         if not os.path.exists(fname):
                             break
-                        print(f'Storing file: {fname}')
-                        uri = kcl.store_file(fname, label=f'{z}_{j}_{k}.jpeg')
-                        image_files[f'{z}_{j}_{k}'] = uri
+                        
+                        image_files[f'{z}_{j}_{k}'] = fname
                         k = k + 1
                     j = j + 1
                 z = z + 1
+            
+            keys = list(image_files.keys())
+
+            # Store image files in kachery-cloud
+            uris = _store_files_parallel([image_files[key] for key in keys], labels=[f'{key}.jpeg' for key in keys])
+            
+            # Replace image file names with URIs
+            for key, uri in zip(keys, uris):
+                image_files[key] = uri
+            
+            # Prepare the data for the figURL
             data = {
                 'tileSize': self._tile_size,
-                'width': self._data.shape[1],
-                'height': self._data.shape[0],
+                'width': image.width,
+                'height': image.height,
                 'numZoomLevels': num_zoom_levels,
                 'imageFiles': image_files
             }
+
+            # Prepare the figurl Figure
             F = fig.Figure(
                 view_url='gs://figurl/tiled-image-1',
                 data=data
             )
             url = F.url(label=label)
             return url
+
+# def _store_files(fnames: List[str], *, labels: List[str]) -> List[str]:
+#     uris: List[str] = []
+#     for fname, label in zip(fnames, labels):
+#         print(f'Storing file: {fname}')
+#         uri = kcl.store_file(fname, label=label)
+#         uris.append(uri)
+#     return uris
+
+def _store_files_parallel(fnames: List[str], *, labels: List[str]) -> List[str]:
+    executor = ThreadPoolExecutor(max_workers=10)
+    results = executor.map(_store_file, fnames, labels)
+    return results
+    
+def _store_file(fname: str, label: str):
+    print(f'Storing file: {fname}')
+    return kcl.store_file(fname, label=label)
