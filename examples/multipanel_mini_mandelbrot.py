@@ -5,10 +5,10 @@ from figurl_tiled_image import TiledImage
 
 def main():
     print('Creating Mandelbrot array')
-    width = 10000
-    height = 8000
-    max_iterations = 100
-    tile_size = 2048
+    width = 500
+    height = 400
+    max_iterations = 500
+    tile_size=180
     x = mandelbrot(height, width, max_iterations=max_iterations, zoom=1.3)
     x = x.astype(np.float32) / max_iterations
     x[x>1] = 1
@@ -26,7 +26,7 @@ def main():
     print(url)
 
     # Output on 6/7/22
-    # https://figurl.org/f?v=gs://figurl/figurl-tiled-image-2&d=ipfs://QmYDC6aw1dD3NLyvMjzhoZgXaU7XNMRScQ8NLLGS2gacM9&label=Mandelbrot%20tiled%20image
+    # https://figurl.org/f?v=gs://figurl/figurl-tiled-image-2&d=ipfs://QmfWpMhx3uihzQvmbKo53UfxK6RoFZpGEMeUcdhijkqe8t&label=Mandelbrot%20tiled%20image
 
 # Thanks: https://www.learnpythonwithrune.org/numpy-compute-mandelbrot-set-by-vectorization/
 def mandelbrot(height, width, x=-0.5, y=0, zoom=1, max_iterations=100):

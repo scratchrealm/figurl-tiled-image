@@ -11,9 +11,13 @@ This project uses [kachery-cloud](https://github.com/scratchrealm/kachery-cloud)
 It is recommended that you use a conda environment with Python >= 3.8 and numpy.
 
 ```bash
-# clone this repo
-git clone https://github.com/scratchrealm/figurl-tiled-image
+pip install --upgrade figurl_tiled_image
+```
 
+Or install from source:
+
+```bash
+git clone https://github.com/scratchrealm/figurl-tiled-image
 cd figurl-tiled-image
 pip install -e .
 ```
@@ -33,10 +37,12 @@ From Numpy array:
 import numpy as np
 from figurl_tiled_image import TiledImage
 
-array = ... # create a color image numpy array [N1 x N2 x 3] uint8
+array1 = ... # create a color image numpy array [N1 x N2 x 3] uint8
+array2 = ... # create a color image numpy array [N1 x N2 x 3] uint8
 
 X = TiledImage(tile_size=4096)
-X.add_layer('layer1', array)
+X.add_layer('layer 1', array1)
+X.add_layer('layer 2', array2)
 url = X.url(label='Numpy example')
 print(url)
 ```
@@ -47,51 +53,28 @@ From image file:
 import pyvips
 from figurl_tiled_image import TiledImage
 
-filename = '/path/to/some/image.png' # substitute the path to your image
-image = pyvips.new_from_file(filename)
+filename1 = '/path/to/some/image1.png' # substitute the path to your image
+image1 = pyvips.new_from_file(filename1)
+
+filename2 = '/path/to/some/image2.png' # substitute the path to your image
+image2 = pyvips.new_from_file(filename2)
 
 X = TiledImage(tile_size=4096)
-X.add_layer('layer1', image)
+X.add_layer('layer 1', image1)
+X.add_layer('layer 2', image2)
 url = X.url(label='Example')
 print(url)
 ```
 
 ## Example - Mandelbrot set
 
-See [examples/mandelbrot.py](examples/mandelbrot.py) and [examples/mini_mandelbrot.py](examples/mini_mandelbrot.py)
+See [examples/multipanel_mandelbrot.py](examples/multipanel_mandelbrot.py) and [examples/multipanel_mini_mandelbrot.py](examples/multipanel_mini_mandelbrot.py)
 
-```python
-import numpy as np
-import matplotlib.pyplot as plt
-from figurl_tiled_image import TiledImage
-
-print('Creating Mandelbrot array')
-width = 5000
-height = 4000
-max_iterations = 100
-tile_size = 4096
-x = mandelbrot(height, width, max_iterations=max_iterations, zoom=1.3)
-x = x.astype(np.float32) / max_iterations
-x[x>1] = 1
-
-print('Converting to color map uint8')
-RdGy = plt.get_cmap('RdGy')
-y = np.flip((RdGy(x)[:,:,:3]*255).astype(np.uint8), axis=0) # colorize and convert to uint8
-
-print('Creating TiledImage figURL')
-X = TiledImage(tile_size=tile_size)
-X.add_layer('mandelbrot', y)
-url = X.url(label='Mandelbrot image')
-print(url)
-```
-
-[View resulting figURL - Mandelbrot set](...)
-
-## Example - High res. earth from NASA and NOAA
+<!-- ## Example - High res. earth from NASA and NOAA
 
 See [examples/high_res_earth_from_url.py](examples/high_res_earth_from_url.py)
 
-[View resulting figURL - Earth](...)
+[View resulting figURL - Earth](...) -->
 
 ## For developers
 
