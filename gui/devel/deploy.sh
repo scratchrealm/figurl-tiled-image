@@ -2,7 +2,7 @@
 
 set -ex
 
-TARGET=gs://figurl/tiled-image-1
+TARGET=gs://figurl/figurl-tiled-image-2
 
 yarn build
 

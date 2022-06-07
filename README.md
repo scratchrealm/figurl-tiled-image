@@ -1,6 +1,6 @@
 # figurl-tiled-image
 
-View a tiled image using deck.gl.
+View a stack of tiled images using deck.gl.
 
 This project uses [kachery-cloud](https://github.com/scratchrealm/kachery-cloud) and [figurl](https://github.com/scratchrealm/figurl2).
 
@@ -35,7 +35,8 @@ from figurl_tiled_image import TiledImage
 
 array = ... # create a color image numpy array [N1 x N2 x 3] uint8
 
-X = TiledImage(array, tile_size=512)
+X = TiledImage(tile_size=4096)
+X.add_layer('layer1', array)
 url = X.url(label='Numpy example')
 print(url)
 ```
@@ -49,7 +50,8 @@ from figurl_tiled_image import TiledImage
 filename = '/path/to/some/image.png' # substitute the path to your image
 image = pyvips.new_from_file(filename)
 
-X = TiledImage(image, tile_size=512)
+X = TiledImage(tile_size=4096)
+X.add_layer('layer1', image)
 url = X.url(label='Example')
 print(url)
 ```
@@ -67,7 +69,7 @@ print('Creating Mandelbrot array')
 width = 5000
 height = 4000
 max_iterations = 100
-tile_size = 512
+tile_size = 4096
 x = mandelbrot(height, width, max_iterations=max_iterations, zoom=1.3)
 x = x.astype(np.float32) / max_iterations
 x[x>1] = 1
@@ -77,20 +79,19 @@ RdGy = plt.get_cmap('RdGy')
 y = np.flip((RdGy(x)[:,:,:3]*255).astype(np.uint8), axis=0) # colorize and convert to uint8
 
 print('Creating TiledImage figURL')
-X = TiledImage(y, tile_size=tile_size)
-url = X.url(label='Mandelbrot tiled image')
+X = TiledImage(tile_size=tile_size)
+X.add_layer('mandelbrot', y)
+url = X.url(label='Mandelbrot image')
 print(url)
-
-# https://figurl.org/f?v=gs://figurl/tiled-image-1&d=ipfs://bafkreihcn72fhpebdujz5dj7bkmsrn3cydrl73y6gnwawtk5by4jmnsv4e&label=Mandelbrot%20tiled%20image
 ```
 
-[View resulting figURL - Mandelbrot set](https://figurl.org/f?v=gs://figurl/tiled-image-1&d=ipfs://bafkreihcn72fhpebdujz5dj7bkmsrn3cydrl73y6gnwawtk5by4jmnsv4e&label=Mandelbrot%20tiled%20image)
+[View resulting figURL - Mandelbrot set](...)
 
 ## Example - High res. earth from NASA and NOAA
 
 See [examples/high_res_earth_from_url.py](examples/high_res_earth_from_url.py)
 
-[View resulting figURL - Earth](https://figurl.org/f?v=gs://figurl/tiled-image-1&d=ipfs://bafkreidde4hrwsoh44dzntxm4sl3n7vccksd74pzcmnu5fgqhwtpy3zpxq&label=Earth%20-%20tiled%20image%20example)
+[View resulting figURL - Earth](...)
 
 ## For developers
 
@@ -107,4 +108,4 @@ yarn install
 yarn start
 ```
 
-Then replace `v=gs://figurl/tiled-image-1` by `v=http://localhost:3000` in the URL you are viewing. Updates to the source code will live-update the view in the browser. If you improve the visualization, please contribute by creating a PR.
+Then replace `v=gs://figurl/figurl-tiled-image-2` by `v=http://localhost:3000` in the URL you are viewing. Updates to the source code will live-update the view in the browser. If you improve the visualization, please contribute by creating a PR.

@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { DeckGlTileLayerComponent, DeckGlTileLayerData, isDeckGlTileLayerData } from './DeckGlTileLayerComponent/DeckGlTileLayerComponent';
 import { getFigureData, useWindowDimensions } from './figurl';
+import { TiledImageComponent, TiledImageData, isTiledImageData } from './TiledImageComponent/TiledImageComponent';
 
 
 function App() {
-  let [data, setData] = useState<DeckGlTileLayerData>()
+  let [data, setData] = useState<TiledImageData>()
   const [errorMessage, setErrorMessage] = useState<string>()
   const {width, height} = useWindowDimensions()
 
   useEffect(() => {
     getFigureData().then((data: any) => {
-      if (!isDeckGlTileLayerData(data)) {
+      if (!isTiledImageData(data)) {
         setErrorMessage(`Invalid figure data`)
         console.error('Invalid figure data', data)
         return
@@ -32,7 +32,7 @@ function App() {
   }
 
   return (
-    <DeckGlTileLayerComponent
+    <TiledImageComponent
       data={data}
       width={width - 10}  // we don't want the scrollbar to appear even when the menu is opened
       height={height - 5} // we don't want the scrollbar to appear

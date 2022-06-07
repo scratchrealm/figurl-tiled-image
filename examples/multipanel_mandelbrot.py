@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from figurl_tiled_image import TiledImage
 
+
 def main():
     print('Creating Mandelbrot array')
     width = 5000
@@ -17,12 +18,15 @@ def main():
     y = np.flip((RdGy(x)[:,:,:3]*255).astype(np.uint8), axis=0) # colorize and convert to uint8
 
     print('Creating TiledImage figURL')
-    X = TiledImage(y, tile_size=tile_size)
+    X = TiledImage(tile_size=tile_size)
+    X.add_layer('layer 1', y)
+    y[:, :, 0] = 0
+    X.add_layer('layer 2', y)
     url = X.url(label='Mandelbrot tiled image')
     print(url)
 
-    # Output on 5/11/22
-    # https://figurl.org/f?v=gs://figurl/tiled-image-1&d=ipfs://bafkreihcn72fhpebdujz5dj7bkmsrn3cydrl73y6gnwawtk5by4jmnsv4e&label=Mandelbrot%20tiled%20image
+    # Output on 6/7/22
+    # https://figurl.org/f?v=gs://figurl/figurl-tiled-image-2&d=ipfs://QmYDC6aw1dD3NLyvMjzhoZgXaU7XNMRScQ8NLLGS2gacM9&label=Mandelbrot%20tiled%20image
 
 # Thanks: https://www.learnpythonwithrune.org/numpy-compute-mandelbrot-set-by-vectorization/
 def mandelbrot(height, width, x=-0.5, y=0, zoom=1, max_iterations=100):
