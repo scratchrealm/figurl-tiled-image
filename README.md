@@ -2,6 +2,8 @@
 
 View a stack of tiled images using deck.gl.
 
+[See this example](https://figurl.org/f?v=gs://figurl/figurl-tiled-image-2&d=ipfs://QmYDC6aw1dD3NLyvMjzhoZgXaU7XNMRScQ8NLLGS2gacM9&label=Mandelbrot%20tiled%20image)
+
 This project uses [kachery-cloud](https://github.com/scratchrealm/kachery-cloud) and [figurl](https://github.com/scratchrealm/figurl2).
 
 > **IMPORTANT**: This package is intended for collaborative sharing of data for scientific research. It should not be used for other purposes.
