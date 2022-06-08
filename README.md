@@ -70,7 +70,15 @@ print(url)
 
 ## Example - Mandelbrot set
 
+![mandelbrot_example](examples/mandelbrot.png)
+
 See [examples/multipanel_mandelbrot.py](examples/multipanel_mandelbrot.py) and [examples/multipanel_mini_mandelbrot.py](examples/multipanel_mini_mandelbrot.py)
+
+## Example - Visualization of ephys data
+
+![spikeinterface_example](examples/spikeinterface.png)
+
+See [examples/spikeinterface_example.py](examples/spikeinterface_example.py) (requires [SpikeInterface](https://github.com/SpikeInterface/spikeinterface) installation and access to raw data file).
 
 <!-- ## Example - High res. earth from NASA and NOAA
 
