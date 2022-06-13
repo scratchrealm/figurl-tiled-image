@@ -3,6 +3,7 @@ import os
 
 import spikeinterface as si
 import spikeinterface.toolkit as st
+import spikeinterface.widgets as sw
 
 from figurl_tiled_image import TiledImage
 
@@ -50,7 +51,7 @@ def convert_and_upload(processing_steps, labels, start_frame, num_samples):
         else:
             color_range = 250
         
-        img = st.array_to_image(arr, 
+        img = sw.array_to_image(arr, 
                                 color_range=color_range,
                                 num_timepoints_per_row = 6000)
         
