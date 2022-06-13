@@ -5,7 +5,7 @@ setup(
     scripts=[],
     include_package_data = True,
     install_requires=[
-        'kachery-cloud',
+        'kachery-cloud>=0.1.15',
         'figurl',
         'pyvips'
     ]

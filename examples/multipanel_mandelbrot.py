@@ -6,7 +6,7 @@ from figurl_tiled_image import TiledImage
 def main():
     print('Creating Mandelbrot array')
     width = 10000
-    height = 8000
+    height = 9000
     max_iterations = 100
     tile_size = 2048
     x = mandelbrot(height, width, max_iterations=max_iterations, zoom=1.3)
