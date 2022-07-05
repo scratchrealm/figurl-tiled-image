@@ -11,6 +11,7 @@ class TiledImage:
     def __init__(self, tile_size: int) -> None:
         self._tile_size = tile_size
         self._layers = []
+
     def add_layer(self, label: str, data: Union[np.array, pyvips.Image]):
         if isinstance(data, pyvips.Image):
             image: pyvips.Image = data
@@ -21,14 +22,16 @@ class TiledImage:
             'label': label,
             'image': image
         })
-    def url(self, *, label: str):
+
+    def url(self, *, label: str, verbose: bool = True):
         data = {
             'layers': []
         }
         for L in self._layers:
             layer_label: str = L['label']
             image: pyvips.Image = L['image']
-            print(f'Layer {layer_label} ({image.width} x {image.height})')
+            if verbose:
+                print(f'Layer {layer_label} ({image.width} x {image.height})')
             with kcl.TemporaryDirectory() as tmpdir:
                 image.dzsave(f'{tmpdir}/output',
                     overlap=0, 
@@ -63,7 +66,8 @@ class TiledImage:
                 keys = list(image_files.keys())
 
                 # Store image files in kachery-cloud
-                uris = _store_files_parallel([image_files[key] for key in keys], labels=[f'{key}.jpeg' for key in keys])
+                uris = _store_files_parallel([image_files[key] for key in keys], labels=[f'{key}.jpeg' for key in keys],
+                                             verbose=verbose)
                 
                 # Replace image file names with URIs
                 for key, uri in zip(keys, uris):
@@ -95,11 +99,12 @@ class TiledImage:
 #         uris.append(uri)
 #     return uris
 
-def _store_files_parallel(fnames: List[str], *, labels: List[str]) -> List[str]:
+def _store_files_parallel(fnames: List[str], verbose: bool = True, *, labels: List[str]) -> List[str]:
     executor = ThreadPoolExecutor(max_workers=10)
-    results = executor.map(_store_file, fnames, labels)
+    results = executor.map(_store_file, fnames, labels, [verbose] * len(fnames))
     return results
     
-def _store_file(fname: str, label: str):
-    print(f'Storing file: {fname}')
+def _store_file(fname: str, label: str, verbose: str):
+    if verbose:
+        print(f'Storing file: {fname}')
     return kcl.store_file(fname, label=label)
